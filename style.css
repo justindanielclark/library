@@ -5,5 +5,162 @@
 }
 
 body {
-  background-color: #123;
+  min-height: 100vh;
+  display: flex;
+  align-content: stretch;
+}
+
+.container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: auto 1fr;
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0.5rem 1rem;
+}
+.controls .inputGroup {
+  flex: 1 0 400px;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+.controls .inputGroup .controlGroup {
+  display: flex;
+  flex-direction: row;
+}
+.controls .inputGroup .controlGroup > * {
+  flex: 1 0 0;
+}
+
+.sidebar {
+  grid-area: 1/1/3/2;
+  background-color: #1e293b;
+  display: flex;
+  flex-direction: column;
+  color: #f8fafc;
+}
+.sidebar .inputGroup {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: stretch;
+}
+.sidebar .inputGroup label {
+  font-size: 1.2rem;
+  text-decoration: underline;
+}
+.sidebar .radioGroup input {
+  display: inline;
+}
+.sidebar .radioGroup p {
+  display: inline;
+}
+
+main {
+  grid-area: 2/2/3/3;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  align-content: flex-start;
+  background-color: #475569;
+}
+main .card {
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-content: center;
+  background-color: #64748b;
+  color: #0f172a;
+  border-bottom-right-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  border-top: 0.15rem solid #334155;
+  border-bottom: 0.15rem solid #94a3b8;
+  border-left: 0.15rem solid #334155;
+}
+main .card .cardLeft {
+  flex: 1 0 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
+  padding: 0.25rem;
+  z-index: 0;
+}
+main .card .cardLeft .bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+main .card .cardRight {
+  flex: 0 0 1.5rem;
+  display: grid;
+  gap: 5px;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  background-color: #94a3b8;
+  border-bottom-right-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+main .card .title {
+  font-size: 1.5rem;
+  align-self: center;
+}
+main .card .author {
+  font-size: 0.8rem;
+  padding-left: 1rem;
+  color: #1e293b;
+}
+main .card .pageCount {
+  font-size: 0.7rem;
+  color: #1e293b;
+}
+main .card .svgContainer {
+  position: relative;
+  z-index: 1;
+  width: 1rem;
+  height: 1rem;
+  justify-self: center;
+  align-self: center;
+}
+main .card .svgClose {
+  align-self: flex-end;
+}
+main .card .svgClose::before {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  width: 0.55rem;
+  height: 0.55rem;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  background-color: white;
+}
+main .card .svgReadStatus {
+  align-self: flex-start;
+}
+main .card .svgReadStatus::before {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  width: 0.65rem;
+  height: 1rem;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  background-color: white;
+}
+main .card .close {
+  fill: #630914;
+}
+main .card .readStatus.valid {
+  fill: #04260a;
+}
+main .card .readStatus.invalid {
+  fill: #630914;
 }/*# sourceMappingURL=style.css.map */

@@ -1,3 +1,19 @@
+$color-valid: #04260a;
+$color-invalid: #630914;
+
+$card-SVG-Width-Height: 1rem;
+
+$color-0: #f8fafc;
+$color-1: #f1f5f9;
+$color-2: #e2e8f0;
+$color-3: #cbd5e1;
+$color-4: #94a3b8;
+$color-5: #64748b;
+$color-6: #475569;
+$color-7: #334155;
+$color-8: #1e293b;
+$color-9: #0f172a;
+
 * {
     margin: 0;
     padding: 0;
@@ -5,5 +21,161 @@
 }
 
 body {
-    background-color: #123;
+    min-height: 100vh;
+    display: flex;
+    align-content: stretch;
+}
+.container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: auto 1fr;
+}
+.controls {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: .5rem 1rem;
+    .inputGroup {
+        flex: 1 0 400px;
+        padding: 0 .5rem;
+        display: flex;
+        flex-direction: column;
+        .controlGroup {
+            display: flex;
+            flex-direction: row;
+            &>*{
+                flex: 1 0 0;
+            }
+        }
+    }
+}
+.sidebar {
+    grid-area: 1 / 1 / 3 / 2;
+    background-color: $color-8;
+    display: flex;
+    flex-direction: column;
+    color: $color-0;
+    .inputGroup {
+        padding: .5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-content: stretch;
+        label {
+            font-size: 1.2rem;
+            text-decoration: underline;
+        }
+    }
+    .radioGroup {
+        input {
+            display: inline;
+        }
+        p {
+            display: inline;
+        }
+    }
+}
+main {
+    grid-area: 2 / 2 / 3 / 3;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    align-content: flex-start;
+    background-color: $color-6;
+
+    .card {
+        margin: .5rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-content: center;
+        background-color: $color-5;
+        color: $color-9;
+        border-bottom-right-radius: .5rem;
+        border-top-right-radius: .5rem;
+        border-top: .15rem solid $color-7;
+        border-bottom: .15rem solid $color-4;
+        border-left: .15rem solid $color-7;
+        .cardLeft {
+            flex: 1 0 0;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr auto;
+            padding: .25rem;
+            z-index: 0;
+            .bottom {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+        .cardRight {
+            flex: 0 0 1.5rem;
+            display: grid;
+            gap: 5px;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 1fr;
+            background-color: $color-4;
+            border-bottom-right-radius: .5rem;
+            border-top-right-radius: .5rem;
+        }
+        .title {
+            font-size: 1.5rem;
+            align-self: center;
+        }
+        .author {
+            font-size: .8rem;
+            padding-left: 1rem;
+            color: $color-8;
+        }
+        .pageCount {
+            font-size: .7rem;
+            color: $color-8;
+        }
+        .svgContainer {
+            position: relative;
+            z-index: 1;
+            width: $card-SVG-Width-Height;
+            height: $card-SVG-Width-Height;
+            justify-self: center;
+            align-self: center;
+        }
+        .svgClose {
+            align-self: flex-end;
+            &::before{
+                position: absolute;
+                z-index: -1;
+                content: '';
+                width: calc($card-SVG-Width-Height*.55);
+                height: calc($card-SVG-Width-Height*.55);
+                left: 50%;
+                top: 50%;
+                transform: translateX(-50%) translateY(-50%);
+                background-color: white;
+            }
+        }
+        .svgReadStatus {
+            align-self: flex-start;
+            &::before{
+                position: absolute;
+                z-index: -1;
+                content: '';
+                width: calc($card-SVG-Width-Height*.65);
+                height: calc($card-SVG-Width-Height);
+                left: 50%;
+                top: 50%;
+                transform: translateX(-50%) translateY(-50%);
+                background-color: white;
+            }
+        }
+        .close {
+            fill: $color-invalid;
+        }
+        .readStatus.valid {
+            fill: $color-valid;
+        }
+        .readStatus.invalid {
+            fill: $color-invalid;
+        }
+    }
 }
