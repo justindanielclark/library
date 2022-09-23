@@ -1,4 +1,118 @@
-let data = [
+function displayCards(Books){
+    removeChildren(main);
+    Books.forEach((book, index, arr) => {
+        cardBuilder(book, index, arr);
+    });
+    function cardBuilder(book, index, arr){
+        const Elements = {
+            index: index
+        };
+        
+        Elements.card = createElement(`div`, [`card`], [`cardLeft`, `cardRight`], null, null);
+        
+        Elements.cardLeft = createElement(`div`, [`cardLeft`], [`title`, `bottom`], null, null);
+        Elements.title = createElement(`h1`, [`title`], null, `${book.title}`, null);
+        Elements.bottom = createElement(`div`, [`bottom`], [`author`, `pageCount`], null, null);
+        Elements.author = createElement(`h2`, [`author`], null, `${book.author}`, null);
+        Elements.pageCount = createElement(`p`, [`pageCount`], null, `${book.pageCount} Pages`, null);
+    
+        Elements.cardRight = createElement(`div`, [`cardRight`], [`svgClose`, `svgReadStatus`], null, null);
+        Elements.svgClose = createElement(`div`, [`svgClose`, `svgContainer`], [`close`], null, null);
+        Elements.close = createElement(`svg`, [`close`], [`closePath`], null, {viewBox: `0 0 512 512`})
+        Elements.closePath = createElement(`path`, null, null, null, {d: `M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z`});
+        Elements.svgReadStatus = createElement(`div`, [`svgReadStatus`, `svgContainer`], [`readStatus`], null, null);
+        Elements.readStatus = createElement(`svg`, book.readStatus ? [`readStatus`, `valid`] : [`readStatus`], [`readStatusPath`], null, {viewBox:`0 0 448 512`})
+        Elements.readStatusPath = createElement(`path`, null, null, null, {d: `M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z`})
+    
+        document.querySelector(`main`).appendChild(Elements.card.node);
+        attachChildren(Elements.card);
+        Elements.svgClose.node.addEventListener(`click`, (e)=>{
+            console.log(`svgClose`);
+            console.log(`Index: ${index}`)
+            console.dir(arr)
+        });
+        Elements.svgReadStatus.node.addEventListener(`click`, (e)=>{
+            arr[index].setReadStatus(!arr[index].readStatus)
+            Elements.readStatus.node.classList.toggle(`valid`);
+        })
+    
+        function createElement(type, classes, children, textContent, attributes){
+            let elem;
+            if(type === `svg` || type === `path`){
+                elem = document.createElementNS("http://www.w3.org/2000/svg", type);
+            } else {
+                elem = document.createElement(type);
+            }
+            elem.textContent = textContent;
+            if(classes){
+                classes.forEach(c => elem.classList.add(c));
+            }
+            if(attributes){
+                Object.keys(attributes).forEach(key => {
+                    elem.setAttribute(key, attributes[key]);
+                })
+            }
+            return {
+                node: elem, 
+                children: children
+            }
+        }
+        function attachChildren(element){
+            if(element.children){
+                element.children.forEach(child=>{
+                    let childObj = Elements[child]
+                    if(childObj.children){
+                        attachChildren(childObj);
+                    }
+                    element.node.appendChild(childObj.node)
+                })
+            }
+    
+        }
+    }
+    function removeChildren(element){
+        Array.from(element.children).forEach(child=>{
+            element.removeChild(child);
+        })
+    }
+}
+
+function stringComparison(a,b){
+    a = a.toLowerCase();
+    b = b.toLowerCase();
+    return a.localeCompare(b, `en`, {sensitivity: `base`});
+}
+function compareAuthors(a, b, reversed){
+    return reversed ? stringComparison(a.author, b.author) * -1 : stringComparison(a.author, b.author);
+}
+function compareTitle(a, b, reversed){
+    return reversed ? stringComparison(a.title, b.title) * -1 : stringComparison(a.title, b.title);
+}
+function comparePages(a, b, reversed){
+    let result;
+    if (a.pageCount === b.pageCount){
+        return 0
+    }
+    if (a.pageCount > b.pageCount){
+        result = 1;
+    } else {
+        result = -1;
+    }
+    return reversed ? result * -1 : result;
+}
+
+function Book (title, author, pageCount, readStatus){
+    this.title = title;
+    this.author = author;
+    this.pageCount = pageCount;
+    this.readStatus = readStatus;
+}
+Book.prototype.setReadStatus = function(bool){
+    this.readStatus = bool;
+}
+const main = document.querySelector(`main`);
+const Books = [];
+const data = [
     {
       "author": "Chinua Achebe",
       "country": "Nigeria",
@@ -999,94 +1113,11 @@ let data = [
       "title": "Memoirs of Hadrian",
       "year": 1951
     }
-  ]
+]
 
-const main = document.querySelector(`main`);
-
-function Book (title, author, pageCount, readStatus){
-    this.title = title;
-    this.author = author;
-    this.pageCount = pageCount;
-    this.readStatus = readStatus;
-}
-Book.prototype.setReadStatus = function(bool){
-    this.readStatus = bool;
-}
-
-const Books = [];
 data.forEach(dataPoint=>{
     Books.push(new Book(dataPoint.title, dataPoint.author, dataPoint.pages, Math.random() >= .5 ? true : false))
 })
+Books.sort((a,b)=>compareTitle(a,b,true))
+displayCards(Books);
 
-
-Books.forEach((book, index, arr) => {
-    cardBuilder(book, index, arr);
-})
-
-function cardBuilder(book, index, arr){
-    const Elements = {
-        index: index
-    };
-    
-    Elements.card = createElement(`div`, [`card`], [`cardLeft`, `cardRight`], null, null);
-    
-    Elements.cardLeft = createElement(`div`, [`cardLeft`], [`title`, `bottom`], null, null);
-    Elements.title = createElement(`h1`, [`title`], null, `${book.title}`, null);
-    Elements.bottom = createElement(`div`, [`bottom`], [`author`, `pageCount`], null, null);
-    Elements.author = createElement(`h2`, [`author`], null, `${book.author}`, null);
-    Elements.pageCount = createElement(`p`, [`pageCount`], null, `${book.pageCount} Pages`, null);
-
-    Elements.cardRight = createElement(`div`, [`cardRight`], [`svgClose`, `svgReadStatus`], null, null);
-    Elements.svgClose = createElement(`div`, [`svgClose`, `svgContainer`], [`close`], null, null);
-    Elements.close = createElement(`svg`, [`close`], [`closePath`], null, {viewBox: `0 0 512 512`})
-    Elements.closePath = createElement(`path`, null, null, null, {d: `M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z`});
-    Elements.svgReadStatus = createElement(`div`, [`svgReadStatus`, `svgContainer`], [`readStatus`], null, null);
-    Elements.readStatus = createElement(`svg`, book.readStatus ? [`readStatus`, `valid`] : [`readStatus`], [`readStatusPath`], null, {viewBox:`0 0 448 512`})
-    Elements.readStatusPath = createElement(`path`, null, null, null, {d: `M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z`})
-
-    document.querySelector(`main`).appendChild(Elements.card.node);
-    attachChildren(Elements.card);
-    Elements.svgClose.node.addEventListener(`click`, (e)=>{
-        console.log(`svgClose`);
-        console.log(`Index: ${index}`)
-        console.dir(arr)
-    });
-    Elements.svgReadStatus.node.addEventListener(`click`, (e)=>{
-        arr[index].setReadStatus(!arr[index].readStatus)
-        Elements.readStatus.node.classList.toggle(`valid`);
-    })
-
-    function createElement(type, classes, children, textContent, attributes){
-        let elem;
-        if(type === `svg` || type === `path`){
-            elem = document.createElementNS("http://www.w3.org/2000/svg", type);
-        } else {
-            elem = document.createElement(type);
-        }
-        elem.textContent = textContent;
-        if(classes){
-            classes.forEach(c => elem.classList.add(c));
-        }
-        if(attributes){
-            Object.keys(attributes).forEach(key => {
-                elem.setAttribute(key, attributes[key]);
-            })
-        }
-        return {
-            node: elem, 
-            children: children
-        }
-    }
-    function attachChildren(element){
-        if(element.children){
-            element.children.forEach(child=>{
-                let childObj = Elements[child]
-                if(childObj.children){
-                    attachChildren(childObj);
-                }
-                element.node.appendChild(childObj.node)
-            })
-        }
-
-    }
-}
