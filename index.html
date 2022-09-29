@@ -8,63 +8,74 @@
     <title>Library</title>
 </head>
 <body>
-    <div class="container">
-        <div class="addBookModal">
-            <div class="modalContainer">
-                <div class="svgClose svgContainer">
-                    <svg class="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>
-                </div>
-                <h1>Add A Book</h1>
-                <div class="inputGroup">
-                    <label for="title">Title</label>
-                    <input type="text" name="title" id="title" required>
-                </div>
-                <div class="inputGroup">
-                    <label for="author">Author</label>
-                    <input type="text" name="author" id="author" required>
-                </div>
-                <div class="inputGroup">
-                    <label for="pageCount">PageCount</label>
-                    <input type="number" name="pageCount" id="pageCount" min="0" max="100" required>
-                </div>
-                <div class="inputGroup">
-                    <label for="hasRead">Status:</label>
-                        <div class="radioGroup">
-                            <input type="radio" name="hasRead" value="true">
-                            <p>Read</p>
-                        </div>
-                        <div class="radioGroup">
-                            <input type="radio" name="hasRead" value="false">
-                            <p>Unfinished</p>
-                        </div>
-                </div>
-                <button>Submit</button>
+    <div class="addBookModal">
+        <div class="modalContainer">
+            <div class="svgClose svgContainer modalClose">
+                <svg class="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>
             </div>
+            <h1>Add A Book</h1>
+            <p class="errorText" data-for=""></p>
+            <div class="inputGroup">
+                <label for="title">Title</label>
+                <input spellcheck="false" type="text" name="title" id="title" required>
+            </div>
+            <p class="errorText" data-for=""></p>
+            <div class="inputGroup">
+                <label for="author">Author</label>
+                <input spellcheck="false" type="text" name="author" id="author" required>
+            </div>
+            <p class="errorText" data-for=""></p>
+            <div class="inputGroup">
+                <label for="pageCount">PageCount</label>
+                <input type="number" name="pageCount" id="pageCount" min="0" max="100" required>
+            </div>
+            <p class="errorText" data-for=""></p>
+            <div class="inputGroup">
+                <label for="hasRead">Status:</label>
+                    <div class="radioGroup">
+                        <input type="radio" name="modal-hasRead" value="true">
+                        <p>Read</p>
+                    </div>
+                    <div class="radioGroup">
+                        <input type="radio" name="modal-hasRead" value="false">
+                        <p>Unfinished</p>
+                    </div>
+            </div>
+            <button class="submitNewBook">Submit</button>
         </div>
+    </div>
+    <div class="container">
         <div class="controls">
-            <div class="inputGroup">
-                <label for="read">Status:</label>
-                <label class="checkboxLabel" for="checkboxRead"><input type="checkbox" name="read" id="checkboxRead"> Read</label>
-                <label class="checkboxLabel" for="checkboxUnread"><input type="checkbox" name="read" id="checkboxUnread"> Unfinished</label>
-            </div>
-            <div class="inputGroup">
-                <label for="pages"># of Pages</label>
-                <select name="pages">
-                    <option value=">">Greater Than</option>
-                    <option value="<">Less Than</option>
-                </select>
-                <input type="number" name="numPages" min="0" max="10000" value="0">
-            </div>
-            <div class="inputGroup">
-                <label for="searchBy">Search By:</label>
-                <select name="searchBy">
-                    <option value="author">Author</option>
-                    <option value="title">Title</option>
-                </select>
-                <input type="text" name="searchTerm" placeholder="Search Term">
-            </div>
-            <button>Filter</button>
-            <button>Reset</button>
+            <div class="controlsContainer">
+                <div class="top">
+                    <div class="inputGroup">
+                        <label for="read">Status:</label>
+                        <label class="checkboxLabel" for="checkboxRead"><input type="checkbox" name="read" id="checkboxRead"> Read</label>
+                        <label class="checkboxLabel" for="checkboxUnread"><input type="checkbox" name="read" id="checkboxUnread"> Unfinished</label>
+                    </div>
+                    <div class="inputGroup">
+                        <label for="pages"># of Pages</label>
+                        <select name="pages">
+                            <option value=">">Greater Than</option>
+                            <option value="<">Less Than</option>
+                        </select>
+                        <input type="number" name="numPages" min="0" max="10000" value="0">
+                    </div>
+                    <div class="inputGroup">
+                        <label for="searchBy">Search By:</label>
+                        <select name="searchBy">
+                            <option value="author">Author</option>
+                            <option value="title">Title</option>
+                        </select>
+                        <input spellcheck="false" type="text" name="searchTerm" placeholder="Search Term">
+                    </div>
+                    <button>Filter</button>
+                    <button>Reset</button>
+                </div>
+                <div class="bottom">
+                    <button class="addBookModalButton">New Book</button>
+                </div>
+            </div>  
         </div>
         <main>
             <!-- <div class="card">
