@@ -3,6 +3,7 @@ function Book (title, author, pageCount, readStatus){
     this.author = author;
     this.pageCount = pageCount;
     this.readStatus = readStatus;
+    this.toDisplay = true;
 }
 Book.prototype.setReadStatus = function(bool){
     this.readStatus = bool;
@@ -42,14 +43,24 @@ submitNewBookButton.addEventListener(`click`, (e)=>{
   let radiovalue = undefined;
   for (let radio of newBookRadios){
     if(radio.checked){
-      radiovalue = radio.value;
+      if(radio.value === 'true'){
+        radiovalue = true;
+      } else {
+        radiovalue = false;
+      }
     }
   }
-  console.log(newBookTitle.value, newBookAuthor.value, newBookPageCount.value, radiovalue);
+  let newBook = new Book(newBookTitle.value, newBookAuthor.value, newBookPageCount.value, radiovalue);
+  Books.push(newBook);
+  cardBuilder(newBook, Books.length-1, Books);
+  newBookTitle.value = '';
+  newBookAuthor.value = '';
+  newBookPageCount.value = '';
+  document.querySelector(`body`).classList.remove(`overflowHidden`);
+  modal.classList.remove(`show`);
 })
 
 const Books = [];
-const HTMLBooks = [];
 const data = [
     {
       "author": "Chinua Achebe",
@@ -1062,6 +1073,7 @@ Books.forEach((book, index, bookArr) => {
 });
 
 function cardBuilder(book, index, arr){
+  console.log(book);
   const Elements = {};
   
   Elements.card = createElement(`div`, [`card`], [`cardLeft`, `cardRight`], null, {'data-index': index});
