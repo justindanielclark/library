@@ -8,6 +8,7 @@ function Book (title, author, pageCount, readStatus){
 Book.prototype.setReadStatus = function(bool){
     this.readStatus = bool;
 }
+
 const main = document.querySelector(`main`);
 const checkboxRead = document.querySelector(`#checkboxRead`);
 const checkboxUnread = document.querySelector(`#checkboxUnread`);
@@ -61,6 +62,8 @@ submitNewBookButton.addEventListener(`click`, (e)=>{
 })
 
 const Books = [];
+const BookFilters = [];
+const BookSortFunctions = [compareTitle]
 const data = [
     {
       "author": "Chinua Achebe",
@@ -122,86 +125,86 @@ const data = [
       "title": "One Thousand and One Nights",
       "year": 1200
     },
-    // {
-    //   "author": "Unknown",
-    //   "country": "Iceland",
-    //   "imageLink": "images/njals-saga.jpg",
-    //   "language": "Old Norse",
-    //   "link": "https://en.wikipedia.org/wiki/Nj%C3%A1ls_saga\n",
-    //   "pages": 384,
-    //   "title": "Nj\u00e1l's Saga",
-    //   "year": 1350
-    // },
-    // {
-    //   "author": "Jane Austen",
-    //   "country": "United Kingdom",
-    //   "imageLink": "images/pride-and-prejudice.jpg",
-    //   "language": "English",
-    //   "link": "https://en.wikipedia.org/wiki/Pride_and_Prejudice\n",
-    //   "pages": 226,
-    //   "title": "Pride and Prejudice",
-    //   "year": 1813
-    // },
-    // {
-    //   "author": "Honor\u00e9 de Balzac",
-    //   "country": "France",
-    //   "imageLink": "images/le-pere-goriot.jpg",
-    //   "language": "French",
-    //   "link": "https://en.wikipedia.org/wiki/Le_P%C3%A8re_Goriot\n",
-    //   "pages": 443,
-    //   "title": "Le P\u00e8re Goriot",
-    //   "year": 1835
-    // },
-    // {
-    //   "author": "Samuel Beckett",
-    //   "country": "Republic of Ireland",
-    //   "imageLink": "images/molloy-malone-dies-the-unnamable.jpg",
-    //   "language": "French, English",
-    //   "link": "https://en.wikipedia.org/wiki/Molloy_(novel)\n",
-    //   "pages": 256,
-    //   "title": "Molloy, Malone Dies, The Unnamable, the trilogy",
-    //   "year": 1952
-    // },
-    // {
-    //   "author": "Giovanni Boccaccio",
-    //   "country": "Italy",
-    //   "imageLink": "images/the-decameron.jpg",
-    //   "language": "Italian",
-    //   "link": "https://en.wikipedia.org/wiki/The_Decameron\n",
-    //   "pages": 1024,
-    //   "title": "The Decameron",
-    //   "year": 1351
-    // },
-    // {
-    //   "author": "Jorge Luis Borges",
-    //   "country": "Argentina",
-    //   "imageLink": "images/ficciones.jpg",
-    //   "language": "Spanish",
-    //   "link": "https://en.wikipedia.org/wiki/Ficciones\n",
-    //   "pages": 224,
-    //   "title": "Ficciones",
-    //   "year": 1965
-    // },
-    // {
-    //   "author": "Emily Bront\u00eb",
-    //   "country": "United Kingdom",
-    //   "imageLink": "images/wuthering-heights.jpg",
-    //   "language": "English",
-    //   "link": "https://en.wikipedia.org/wiki/Wuthering_Heights\n",
-    //   "pages": 342,
-    //   "title": "Wuthering Heights",
-    //   "year": 1847
-    // },
-    // {
-    //   "author": "Albert Camus",
-    //   "country": "Algeria, French Empire",
-    //   "imageLink": "images/l-etranger.jpg",
-    //   "language": "French",
-    //   "link": "https://en.wikipedia.org/wiki/The_Stranger_(novel)\n",
-    //   "pages": 185,
-    //   "title": "The Stranger",
-    //   "year": 1942
-    // },
+    {
+      "author": "Unknown",
+      "country": "Iceland",
+      "imageLink": "images/njals-saga.jpg",
+      "language": "Old Norse",
+      "link": "https://en.wikipedia.org/wiki/Nj%C3%A1ls_saga\n",
+      "pages": 384,
+      "title": "Nj\u00e1l's Saga",
+      "year": 1350
+    },
+    {
+      "author": "Jane Austen",
+      "country": "United Kingdom",
+      "imageLink": "images/pride-and-prejudice.jpg",
+      "language": "English",
+      "link": "https://en.wikipedia.org/wiki/Pride_and_Prejudice\n",
+      "pages": 226,
+      "title": "Pride and Prejudice",
+      "year": 1813
+    },
+    {
+      "author": "Honor\u00e9 de Balzac",
+      "country": "France",
+      "imageLink": "images/le-pere-goriot.jpg",
+      "language": "French",
+      "link": "https://en.wikipedia.org/wiki/Le_P%C3%A8re_Goriot\n",
+      "pages": 443,
+      "title": "Le P\u00e8re Goriot",
+      "year": 1835
+    },
+    {
+      "author": "Samuel Beckett",
+      "country": "Republic of Ireland",
+      "imageLink": "images/molloy-malone-dies-the-unnamable.jpg",
+      "language": "French, English",
+      "link": "https://en.wikipedia.org/wiki/Molloy_(novel)\n",
+      "pages": 256,
+      "title": "Molloy, Malone Dies, The Unnamable, the trilogy",
+      "year": 1952
+    },
+    {
+      "author": "Giovanni Boccaccio",
+      "country": "Italy",
+      "imageLink": "images/the-decameron.jpg",
+      "language": "Italian",
+      "link": "https://en.wikipedia.org/wiki/The_Decameron\n",
+      "pages": 1024,
+      "title": "The Decameron",
+      "year": 1351
+    },
+    {
+      "author": "Jorge Luis Borges",
+      "country": "Argentina",
+      "imageLink": "images/ficciones.jpg",
+      "language": "Spanish",
+      "link": "https://en.wikipedia.org/wiki/Ficciones\n",
+      "pages": 224,
+      "title": "Ficciones",
+      "year": 1965
+    },
+    {
+      "author": "Emily Bront\u00eb",
+      "country": "United Kingdom",
+      "imageLink": "images/wuthering-heights.jpg",
+      "language": "English",
+      "link": "https://en.wikipedia.org/wiki/Wuthering_Heights\n",
+      "pages": 342,
+      "title": "Wuthering Heights",
+      "year": 1847
+    },
+    {
+      "author": "Albert Camus",
+      "country": "Algeria, French Empire",
+      "imageLink": "images/l-etranger.jpg",
+      "language": "French",
+      "link": "https://en.wikipedia.org/wiki/The_Stranger_(novel)\n",
+      "pages": 185,
+      "title": "The Stranger",
+      "year": 1942
+    },
     // {
     //   "author": "Paul Celan",
     //   "country": "Romania, France",
@@ -1063,11 +1066,19 @@ const data = [
     //   "year": 1951
     // }
 ]
-
 data.forEach(dataPoint=>{
     Books.push(new Book(dataPoint.title, dataPoint.author, dataPoint.pages, Math.random() >= .5 ? true : false))
 })
-Books.sort((a,b)=>compareTitle(a,b,false))
+Books.sort((a,b)=>{
+  let index = 0;
+  let result = 0;
+  while(index < BookSortFunctions.length && result === 0){
+    result = BookSortFunctions[index](a, b, false);
+    index++;
+  }
+  console.log(result);
+  return result;
+})
 Books.forEach((book, index, bookArr) => {
   cardBuilder(book, index, bookArr);
 });
@@ -1146,13 +1157,13 @@ function stringComparison(a,b){
     b = b.toLowerCase();
     return a.localeCompare(b, `en`, {sensitivity: `base`});
 }
-function compareAuthors(a, b, reversed){
+function compareAuthors(a, b, reversed = false){
     return reversed ? stringComparison(a.author, b.author) * -1 : stringComparison(a.author, b.author);
 }
-function compareTitle(a, b, reversed){
+function compareTitle(a, b, reversed = false){
     return reversed ? stringComparison(a.title, b.title) * -1 : stringComparison(a.title, b.title);
 }
-function comparePages(a, b, reversed){
+function comparePages(a, b, reversed = false){
     let result;
     if (a.pageCount === b.pageCount){
         return 0
@@ -1163,6 +1174,17 @@ function comparePages(a, b, reversed){
         result = -1;
     }
     return reversed ? result * -1 : result;
+}
+function compareRead(a, b, reversed = false){
+  let result = 0;
+  if(a.readStatus === b.readStatus){
+    result = 0;
+  } else if (a.readStatus){
+    result = 1;
+  } else {
+    result = -1;
+  }
+  return reversed ? result * -1 : result;
 }
 function updateHTMLBooks(main, books){
   for(let i = 0; i < main.children.length; i++){
