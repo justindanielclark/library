@@ -53,6 +53,8 @@ submitNewBookButton.addEventListener(`click`, (e)=>{
   }
   let newBook = new Book(newBookTitle.value, newBookAuthor.value, newBookPageCount.value, radiovalue);
   Books.push(newBook);
+  booksSort();
+  updateHTMLBooks(main, Books);
   cardBuilder(newBook, Books.length-1, Books);
   newBookTitle.value = '';
   newBookAuthor.value = '';
@@ -1069,20 +1071,22 @@ const data = [
 data.forEach(dataPoint=>{
     Books.push(new Book(dataPoint.title, dataPoint.author, dataPoint.pages, Math.random() >= .5 ? true : false))
 })
-Books.sort((a,b)=>{
-  let index = 0;
-  let result = 0;
-  while(index < BookSortFunctions.length && result === 0){
-    result = BookSortFunctions[index](a, b, false);
-    index++;
-  }
-  console.log(result);
-  return result;
-})
+booksSort();
 Books.forEach((book, index, bookArr) => {
   cardBuilder(book, index, bookArr);
 });
 
+function booksSort(){
+  Books.sort((a,b)=>{
+    let index = 0;
+    let result = 0;
+    while(index < BookSortFunctions.length && result === 0){
+      result = BookSortFunctions[index](a, b, false);
+      index++;
+    }
+    return result;
+  })
+}
 function cardBuilder(book, index, arr){
   console.log(book);
   const Elements = {};
